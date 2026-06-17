@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚦 Traffic Congestion Vulnerability System</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════ -->
+<header class="header">
+    <div class="header-inner">
+        <div class="logo">
+            <span class="logo-icon">🚦</span>
+            <div>
+                <h1>Traffic Congestion</h1>
+                <p>Vulnerability Analysis System</p>
+            </div>
+        </div>
+        <nav class="nav">
+            <button class="nav-btn active" onclick="showSection('dashboard')">
+                📊 Dashboard
+            </button>
+            <button class="nav-btn" onclick="showSection('analysis')">
+                🔍 Analysis
+            </button>
+            <button class="nav-btn" onclick="showSection('simulation')">
+                🚧 Simulation
+            </button>
+            <button class="nav-btn" onclick="showSection('location')">
+                Location
+            </button>
+            <button class="nav-btn" onclick="showSection('report')">
+                📋 Report
+            </button>
+        </nav>
+    </div>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════ -->
+<main class="main">
+
+    <!-- ─── DASHBOARD SECTION ─── -->
+    <section id="dashboard" class="section active">
+        <div class="section-header">
+            <h2>📊 System Dashboard</h2>
+            <p>Traffic Vulnerability Index Overview</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card high">
+                <div class="stat-icon">🔴</div>
+                <div class="stat-info">
+                    <h3 id="high-count">2</h3>
+                    <p>High Risk Roads</p>
+                </div>
+            </div>
+            <div class="stat-card medium">
+                <div class="stat-icon">🟡</div>
+                <div class="stat-info">
+                    <h3 id="medium-count">2</h3>
+                    <p>Medium Risk Roads</p>
+                </div>
+            </div>
+            <div class="stat-card low">
+                <div class="stat-icon">🟢</div>
+                <div class="stat-info">
+                    <h3 id="low-count">1</h3>
+                    <p>Low Risk Roads</p>
+                </div>
+            </div>
+            <div class="stat-card total">
+                <div class="stat-icon">🛣️</div>
+                <div class="stat-info">
+                    <h3 id="total-roads">5</h3>
+                    <p>Total Roads</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TVI Table -->
+        <div class="card">
+            <div class="card-header">
+                <h3>🏆 Road Risk Ranking (TVI Scores)</h3>
+                <div class="search-box">
+                    <input type="text" id="search-input"
+                           placeholder="🔍 Search road..."
+                           oninput="filterTable()" />
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table id="tvi-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)">Rank ↕</th>
+                            <th onclick="sortTable(1)">Road ↕</th>
+                            <th onclick="sortTable(2)">Traffic Density ↕</th>
+                            <th onclick="sortTable(3)">Road Width ↕</th>
+                            <th onclick="sortTable(4)">Alt. Routes ↕</th>
+                            <th onclick="sortTable(5)">Critical ↕</th>
+                            <th onclick="sortTable(6)">TVI Score ↕</th>
+                            <th>Risk Level</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TVI Chart -->
+        <div class="card">
+            <div class="card-header">
+                <h3>📈 TVI Score Chart</h3>
+                <select id="chart-type" onchange="renderChart()">
+                    <option value="bar">Bar Chart</option>
+                    <option value="line">Line Chart</option>
+                    <option value="radar">Radar Chart</option>
+                </select>
+            </div>
+            <div class="chart-container">
+                <canvas id="tvi-chart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── ANALYSIS SECTION ─── -->
+    <section id="analysis" class="section">
+        <div class="section-header">
+            <h2>🔍 Vulnerability Analysis</h2>
+            <p>Traffic Vulnerability Index (TVI) Calculator</p>
+        </div>
+
+        <div class="two-col">
+            <!-- Calculator -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>🧮 TVI Calculator</h3>
+                </div>
+                <div class="form-group">
+                    <label>Road ID</label>
+                    <input type="text" id="calc-road-id"
+                           placeholder="e.g., AB" maxlength="2" />
+                </div>
+                <div class="form-group">
+                    <label>Traffic Density (0-100)
+                        <span class="weight-badge">40%</span>
+                    </label>
+                    <input type="range" id="calc-density"
+                           min="0" max="100" value="50"
+                           oninput="updateSlider('density')" />
+                    <span class="slider-val" id="density-val">50</span>
+                </div>
+                <div class="form-group">
+                    <label>Alternative Routes (1-5)
+                        <span class="weight-badge">30%</span>
+                    </label>
+                    <input type="range" id="calc-alt"
+                           min="1" max="5" value="2"
+                           oninput="updateSlider('alt')" />
+                    <span class="slider-val" id="alt-val">2</span>
+                </div>
+                <div class="form-group">
+                    <label>Road Width (1-4 lanes)
+                        <span class="weight-badge">20%</span>
+                    </label>
+                    <input type="range" id="calc-width"
+                           min="1" max="4" value="2"
+                           oninput="updateSlider('width')" />
+                    <span class="slider-val" id="width-val">2</span>
+                </div>
+                <div class="form-group">
+                    <label>Critical Location Nearby
+                        <span class="weight-badge">10%</span>
+                    </label>
+                    <select id="calc-critical">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary"
+                        onclick="calculateTVI()">
+                    ⚡ Calculate TVI
+                </button>
+
+                <!-- Result -->
+                <div id="tvi-result" class="tvi-result hidden">
+                    <div class="result-circle">
+                        <span id="result-score">0</span>
+                        <small>TVI Score</small>
+                    </div>
+                    <div class="result-details">
+                        <p>Road: <strong id="result-road">-</strong></p>
+                        <p>Risk: <strong id="result-risk">-</strong></p>
+                        <div class="breakdown">
+                            <h4>Score Breakdown:</h4>
+                            <div id="breakdown-bars"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formula Info -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>📐 TVI Formula</h3>
+                </div>
+                <div class="formula-box">
+                    <p class="formula">
+                        TVI = <span class="f-traffic">0.40 × Traffic Density</span>
+                        + <span class="f-alt">0.30 × Alt. Route Factor</span>
+                        + <span class="f-width">0.20 × Road Width Factor</span>
+                        + <span class="f-critical">0.10 × Critical Importance</span>
+                    </p>
+                </div>
+
+                <div class="factor-cards">
+                    <div class="factor-item">
+                        <div class="factor-dot" style="background:#e74c3c"></div>
+                        <div>
+                            <strong>Alt. Route Factor</strong>
+                            <p>1 route→100, 2→50, 3→33...</p>
+                        </div>
+                    </div>
+                    <div class="factor-item">
+                        <div class="factor-dot" style="background:#f39c12"></div>
+                        <div>
+                            <strong>Road Width Factor</strong>
+                            <p>2 lanes→80, 3→50, 4→30</p>
+                        </div>
+                    </div>
+                    <div class="factor-item">
+                        <div class="factor-dot" style="background:#9b59b6"></div>
+                        <div>
+                            <strong>Critical Importance</strong>
+                            <p>Yes→100, No→0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk Thresholds -->
+                <div class="risk-thresholds">
+                    <h4>Risk Thresholds</h4>
+                    <div class="threshold high">
+                        🔴 High Risk &nbsp;→&nbsp; TVI ≥ 70
+                    </div>
+                    <div class="threshold medium">
+                        🟡 Medium Risk →&nbsp; TVI ≥ 40
+                    </div>
+                    <div class="threshold low">
+                        🟢 Low Risk &nbsp;&nbsp;→&nbsp; TVI &lt; 40
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── SIMULATION SECTION ─── -->
+    <section id="simulation" class="section">
+        <div class="section-header">
+            <h2>🚧 Road Closure Simulation</h2>
+            <p>Analyze network impact when a road is closed</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>⚙️ Select Road to Close</h3>
+            </div>
+
+            <!-- Road Selector Buttons -->
+            <div class="road-selector">
+                <p>Click on a road to simulate its closure:</p>
+                <div class="road-buttons" id="road-buttons">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+
+            <!-- Network Visualization -->
+            <div class="network-container">
+                <svg id="network-svg" viewBox="0 0 500 350"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <!-- Edges -->
+                    <line id="edge-AB" x1="80"  y1="180" x2="220" y2="80"
+                          class="road-edge" data-road="AB" />
+                    <line id="edge-BC" x1="220" y1="80"  x2="380" y2="80"
+                          class="road-edge" data-road="BC" />
+                    <line id="edge-CD" x1="380" y1="80"  x2="300" y2="250"
+                          class="road-edge" data-road="CD" />
+                    <line id="edge-DE" x1="300" y1="250" x2="150" y2="250"
+                          class="road-edge" data-road="DE" />
+                    <line id="edge-EA" x1="150" y1="250" x2="80"  y2="180"
+                          class="road-edge" data-road="EA" />
+
+                    <!-- Nodes -->
+                    <circle cx="80"  cy="180" r="22" class="node" id="node-A"/>
+                    <circle cx="220" cy="80"  r="22" class="node" id="node-B"/>
+                    <circle cx="380" cy="80"  r="22" class="node" id="node-C"/>
+                    <circle cx="300" cy="250" r="22" class="node" id="node-D"/>
+                    <circle cx="150" cy="250" r="22" class="node" id="node-E"/>
+
+                    <!-- Node Labels -->
+                    <text x="80"  y="186" class="node-label">A</text>
+                    <text x="220" y="86"  class="node-label">B</text>
+                    <text x="380" y="86"  class="node-label">C</text>
+                    <text x="300" y="256" class="node-label">D</text>
+                    <text x="150" y="256" class="node-label">E</text>
+
+                    <!-- Edge Labels -->
+                    <text x="140" y="115"  class="edge-label">AB</text>
+                    <text x="295" y="65"   class="edge-label">BC</text>
+                    <text x="355" y="175"  class="edge-label">CD</text>
+                    <text x="220" y="265"  class="edge-label">DE</text>
+                    <text x="100" y="225"  class="edge-label">EA</text>
+
+                    <!-- Closed marker (hidden by default) -->
+                    <text id="closed-marker" x="0" y="0"
+                          class="closed-marker hidden">❌</text>
+                </svg>
+            </div>
+
+            <!-- Impact Report -->
+            <div id="impact-report" class="impact-report hidden">
+                <h3>📋 Impact Analysis Report</h3>
+                <div class="impact-grid">
+                    <div class="impact-card">
+                        <h4>⛔ Disconnected Areas</h4>
+                        <p id="impact-disconnected">-</p>
+                    </div>
+                    <div class="impact-card">
+                        <h4>📏 Extra Distance</h4>
+                        <p id="impact-distance">-</p>
+                    </div>
+                    <div class="impact-card">
+                        <h4>🛣️ Affected Roads</h4>
+                        <p id="impact-affected">-</p>
+                    </div>
+                    <div class="impact-card">
+                        <h4>⏱️ Delay Increase</h4>
+                        <p id="impact-delay">-</p>
+                    </div>
+                </div>
+                <button class="btn btn-secondary"
+                        onclick="resetSimulation()">
+                    🔄 Reset Simulation
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── REPORT SECTION ─── -->
+    <!-- LOCATION SECTION -->
+    <section id="location" class="section">
+        <div class="section-header">
+            <h2>Location Intelligence</h2>
+            <p>Open-source location lookup using browser geolocation and OpenStreetMap</p>
+        </div>
+
+        <div class="two-col">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Current Location</h3>
+                </div>
+                <div class="location-actions">
+                    <button class="btn btn-primary" onclick="getCurrentLocation()">
+                        Use My Location
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearLocation()">
+                        Clear
+                    </button>
+                </div>
+                <div id="location-status" class="location-status">
+                    Location not loaded yet.
+                </div>
+                <div class="location-grid">
+                    <div class="location-item">
+                        <span>Latitude</span>
+                        <strong id="location-lat">-</strong>
+                    </div>
+                    <div class="location-item">
+                        <span>Longitude</span>
+                        <strong id="location-lon">-</strong>
+                    </div>
+                    <div class="location-item">
+                        <span>Accuracy</span>
+                        <strong id="location-accuracy">-</strong>
+                    </div>
+                    <div class="location-item">
+                        <span>Provider</span>
+                        <strong>OpenStreetMap</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Nearest Address</h3>
+                </div>
+                <div id="location-address" class="location-address">
+                    Waiting for location data.
+                </div>
+                <a id="osm-link" class="btn btn-success location-link"
+                   href="https://www.openstreetmap.org/"
+                   target="_blank" rel="noopener">
+                    Open in OpenStreetMap
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="report" class="section">
+        <div class="section-header">
+            <h2>📋 Full System Report</h2>
+            <p>Comprehensive traffic vulnerability analysis</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>📄 Export Options</h3>
+            </div>
+            <div class="export-buttons">
+                <button class="btn btn-success"
+                        onclick="exportCSV()">
+                    📥 Export CSV
+                </button>
+                <button class="btn btn-primary"
+                        onclick="exportJSON()">
+                    📥 Export JSON
+                </button>
+                <button class="btn btn-warning"
+                        onclick="window.print()">
+                    🖨️ Print Report
+                </button>
+            </div>
+        </div>
+
+        <!-- Full Report Table -->
+        <div class="card">
+            <div class="card-header">
+                <h3>🗂️ Complete Road Data</h3>
+            </div>
+            <div class="table-wrapper">
+                <table id="full-report-table">
+                    <thead>
+                        <tr>
+                            <th>Road ID</th>
+                            <th>Traffic Density</th>
+                            <th>Road Width</th>
+                            <th>Alt. Routes</th>
+                            <th>Critical</th>
+                            <th>TVI Score</th>
+                            <th>Risk Level</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="report-body">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Radar Chart -->
+        <div class="card">
+            <div class="card-header">
+                <h3>🕸️ Road Comparison Radar</h3>
+            </div>
+            <div class="chart-container">
+                <canvas id="radar-chart"></canvas>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer class="footer">
+    <p>
+        🚦 Traffic Congestion Vulnerability System |
+        Member 1: Data & Network |
+        Member 2: Vulnerability Analysis |
+        Member 3: Simulation & Visualization
+    </p>
+</footer>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+</script>
+<!-- Project JS -->
+<script src="script.js"></script>
+</body>
+</html>

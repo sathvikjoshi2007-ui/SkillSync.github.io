@@ -1,0 +1,6 @@
+Node1,Node2,Road_ID,Traffic_Density,Road_Width,Alternative_Routes,Critical_Location
+A,B,AB,80,2,1,Yes
+A,E,EA,50,2,1,No
+B,C,BC,70,3,2,No
+C,D,CD,60,2,1,Yes
+D,E,DE,40,3,2,No
