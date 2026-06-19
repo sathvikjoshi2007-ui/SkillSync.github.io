@@ -1,0 +1,27 @@
+[
+    {
+        "name": "testuser",
+        "email": "test@test.com",
+        "password": "scrypt:32768:8:1$hDTWrjuZMuDGQWG9$f060093ea9bed0d22ea36d8cf2f3e896c4baf74cec41ebfef3c32742011b45389b242c89b94bf33c39fa06ed80cd8cbb702d976ab642ae0e412f7e8ff995e9ad",
+        "job": "",
+        "skills": [
+            {
+                "date": "June 2026",
+                "title": "React"
+            }
+        ],
+        "skills_to_improve": [],
+        "tagline": "A catchy tagline!",
+        "_id": "1"
+    },
+    {
+        "name": "sharanghrav",
+        "email": "javalisharanghrav@gmail.com",
+        "password": "scrypt:32768:8:1$KXiF7AlDnezWUVE1$e3b598910fa07a7885ad30e522ea55f7ec37e465b2a6a4bcb5746a09f110257b79ef763a3fe14f99ef179792719af2809be9023038ba492997b41d96e24fe8cf",
+        "job": "",
+        "skills": [],
+        "skills_to_improve": [],
+        "tagline": "A catchy tagline!",
+        "_id": "2"
+    }
+]
