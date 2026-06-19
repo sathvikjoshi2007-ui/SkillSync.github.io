@@ -8,7 +8,7 @@ import './index.css'
 //     <App />
 //   </React.StrictMode>,
 // )
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App.jsx';
 import SignUp from './Components/SignUp.jsx';
 import Analyze from './Components/Analyze.jsx';
