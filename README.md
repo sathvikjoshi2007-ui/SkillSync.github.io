@@ -1,4 +1,4 @@
-<h1>Welcome to SKANA!<h1/>
+<h1>Welcome to SkillSync!<h1/>
 <h2>The Skill Gap Analyzer and Upskilling Recommendation Engine!</h2>
 <p>🚀 Discover the path to your dream job with our cutting-edge Skill Gap Analyzer! 🚀<br>
 Upload your resume and the job description of your desired position, then click "Analyze" to uncover your skill gaps. But that's not all—get personalized upskilling resources to bridge those gaps and boost your career prospects. Let's turn your career aspirations into reality!</p>
@@ -16,7 +16,7 @@ Upload your resume and the job description of your desired position, then click 
 
 <pre>
 <code>
-git clone https://github.com/heyysiri/SKANA.git
+git clone https://github.com/Sharanghrav-javali/SkillSync.git
 </code>
 </pre>
 <br>
@@ -46,10 +46,11 @@ python app.py
   <li>⚡ <b>Fast and Efficient:</b> Get results in seconds and take actionable steps towards your career goals.</li>
 </ul>
 
-<h3>🎉 Enjoy using SKANA? Follow our developers:</h3>
-<p>Siri Karra - <a href="https://github.com/heyysiri">heyysiri</a> <br>
-Aditya Donapati - <a href="https://github.com/adonapati">adonapati</a> <br>
-Manogna Vadla - <a href="https://github.com/manognavadla">manognavadla</a></p>
+<h3>🎉 Enjoy using SkillSync? Follow our developers:</h3>
+<p>SR Javali - <a href="https://github.com/Sharanghrav-javali">Sharanghrav-Javali</a> <br>
+Sathvik Joshi - <a href="https://github.com/sathvikjoshi2007-ui">Sathvikjoshi2007-ui</a> <br>
+Saurav - <a href="https://github.com/saurav0723-dot">saurav0723-dot</a></p>
+Shashank k shetty - <a href="https://github.com/shashank7934">Shashank7939</a></p>
 
 <h3>📫 Have feedback or need support?</h3>
 <p>Feel free to reach out to us on our GitHub pages or open an issue in the repository. We're here to help!</p>
