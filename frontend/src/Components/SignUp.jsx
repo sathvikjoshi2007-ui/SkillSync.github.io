@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { signup } from '../utils/api';
 
 function SignUp() {
     const [email, setEmail] = useState('');
@@ -23,11 +23,7 @@ function SignUp() {
             return;
         }
         try {
-            const response = await axios.post(
-                'http://localhost:5000/api/signup',
-                { name,email, password },
-                { headers: { 'Content-Type': 'application/json' } }
-            );
+            const response = await signup(name, email, password);
             console.log('Signup successful:', response.data.message);
             navigate('/SignIn');
         } catch (error) {

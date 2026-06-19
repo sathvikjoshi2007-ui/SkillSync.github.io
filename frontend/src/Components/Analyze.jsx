@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { analyzeSkills, recommendCourse } from '../utils/api';
 import NavBar from './NavBar';
 import { SkillsVisualization } from './SkillsVisualization';
 import 'react-vertical-timeline-component/style.min.css';
@@ -110,11 +110,7 @@ function Analyze() {
     formData.append('job_description', jobDescription);
 
     try {
-      const response = await axios.post('http://localhost:5000/skill-analyzer', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await analyzeSkills(resume, jobDescription);
 
       const newAnalysisResult = response.data;
       setAnalysisResult(newAnalysisResult);
@@ -189,10 +185,7 @@ function Analyze() {
     console.log('Sending skill:', skillName);
     setLoadingSkills(prev => ({ ...prev, [skillName]: true }));
     try {
-      const response = await axios.post('http://localhost:5000/recommend_course', 
-        { resource: skillName },
-        { headers: { 'Content-Type': 'application/json' } }
-      );
+      const response = await recommendCourse(skillName);
       console.log('Received from backend:', response.data);
       if (response.data.recommendation) {
         window.open(response.data.recommendation, '_blank');

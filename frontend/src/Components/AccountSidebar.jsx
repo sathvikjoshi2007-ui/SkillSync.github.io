@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAuthenticated, setAuthenticated } from '../utils/auth';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { updateUser } from '../utils/api';
 import { FaCode } from 'react-icons/fa';
 
 function AccountSidebar({ isOpen, onClose }) {
@@ -36,11 +36,7 @@ function AccountSidebar({ isOpen, onClose }) {
 
   const updateUserData = async () => {
     try {
-      const response = await axios.put('http://localhost:5000/api/user/update', {
-        email: userData.email,
-        field: editingField,
-        value: newValue
-      });
+      const response = await updateUser(userData.email, editingField, newValue);
   
       if (response.status === 200) {
         const updatedUserData = { ...userData, [editingField]: newValue };

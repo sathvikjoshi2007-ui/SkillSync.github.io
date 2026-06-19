@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { getJob, updateJob, getSkills, addSkill, getTagline, updateTagline } from '../utils/api';
 import NavBar from './NavBar';
 import profileImg from '../assets/image.png';
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaCode, FaPlus, FaEdit } from 'react-icons/fa';
@@ -18,8 +18,8 @@ function Profile() {
   useEffect(() => {
     fetchUserName();
     fetchPosition();
-    fetchTagline();
-    fetchSkills();
+    fetchTaglineData();
+    fetchSkillsData();
   }, []);
   const fetchUserName = () => {
     const userString = localStorage.getItem('user');
@@ -37,7 +37,7 @@ function Profile() {
         return;
       }
       
-      const response = await axios.get(`http://localhost:5000/api/user/job?email=${encodeURIComponent(user.email)}`);
+      const response = await getJob(user.email);
       if (response.data && response.data.job) {
         setPosition(response.data.job);
       }
@@ -58,10 +58,7 @@ function Profile() {
       
       const jobToSave = position.trim() || 'Developer';
       
-      await axios.post('http://localhost:5000/api/user/job', { 
-        email: user.email, 
-        job: jobToSave
-      });
+      await updateJob(user.email, jobToSave);
       console.log('Position updated successfully');
       setPosition(jobToSave); // Update the state immediately
       fetchPosition(); // Refetch to ensure we have the latest data
@@ -70,7 +67,7 @@ function Profile() {
     }
   };
   
-  const fetchSkills = async () => {
+  const fetchSkillsData = async () => {
     try {
       const userString = localStorage.getItem('user');
       const user = userString ? JSON.parse(userString) : null;
@@ -79,7 +76,7 @@ function Profile() {
         return;
       }
       
-      const response = await axios.get(`http://localhost:5000/api/skills?email=${encodeURIComponent(user.email)}`);
+      const response = await getSkills(user.email);
       if (response.data && Array.isArray(response.data.skills)) {
         setSkills(response.data.skills);
       } else {
@@ -101,10 +98,7 @@ function Profile() {
           console.error('User email not found in local storage');
           return;
         }
-        const response = await axios.post('http://localhost:5000/api/skills', { 
-          email: user.email, 
-          skill: newSkill.trim() 
-        });
+        const response = await addSkill(user.email, newSkill.trim());
         setSkills([...skills, response.data.skill]);
         setNewSkill('');
       } catch (error) {
@@ -115,13 +109,13 @@ function Profile() {
   
 
   // Fetch tagline
-const fetchTagline = async () => {
+const fetchTaglineData = async () => {
   try {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user || !user.email) {
       throw new Error('User email not found');
     }
-    const response = await axios.get(`http://localhost:5000/api/user/tagline?email=${encodeURIComponent(user.email)}`);
+    const response = await getTagline(user.email);
     setTagline(response.data.tagline);
   } catch (error) {
     console.error('Error fetching tagline:', error);
@@ -130,16 +124,13 @@ const fetchTagline = async () => {
 };
 
 // Update tagline
-const saveTagline = async () => {
+const saveTaglineData = async () => {
   try {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user || !user.email) {
       throw new Error('User email not found');
     }
-    await axios.post('http://localhost:5000/api/user/tagline', {
-      email: user.email,
-      tagline: tagline
-    });
+    await updateTagline(user.email, tagline);
     console.log('Tagline updated successfully');
   } catch (error) {
     console.error('Error saving tagline:', error);
@@ -157,7 +148,7 @@ const saveTagline = async () => {
   setPosition(updatedPosition);
   setTagline(updatedTagline);
   savePosition();
-  saveTagline();
+  saveTaglineData();
   };
 
   if (error) {

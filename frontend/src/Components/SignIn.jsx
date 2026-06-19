@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import axios from 'axios';
+import { login } from '../utils/api';
 import { useNavigate, Link } from 'react-router-dom';
 import Logo from '../assets/Logo.png'
 import { getAuthenticated, setAuthenticated } from '../utils/auth';
@@ -18,15 +18,9 @@ const SignIn = () => {
             setError('Email and password are required');
             return;
         }
-        //console.log('Sending login request with:', { email, password });
 
         try {
-            const response = await axios.post(
-                'http://localhost:5000/api/login',
-                { email, password },
-                { headers: { 'Content-Type': 'application/json' } }
-            );
-            //console.log('Login successful:', response.data.message);
+            const response = await login(email, password);
             setAuthenticated(true);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             console.log("Signed in. New auth status:", getAuthenticated());
